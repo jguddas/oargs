@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "minimist": "^1.2.0"
+  },
   "scripts": {
     "test": "jest",
     "watch": "jest --watchAll"
