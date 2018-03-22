@@ -1,5 +1,7 @@
 const minimist = require('minimist')
+const table = require('text-table')
 const assert = require('assert')
+const path = require('path')
 
 module.exports = function Cli() {
 
@@ -59,6 +61,48 @@ module.exports = function Cli() {
     return { command, mapped, argv: { ...flags, _ } }
   }
 
-  return { command, parse }
+  const help = (opts = {}) => {
+    let bin
+    if (opts.bin === 'string') {
+      bin = opts.bin
+    } else {
+      bin = Object.keys(opts.bin || {})
+        .find(key => path.resolve(opts.bin[key]) === process.argv[1])
+        || path.basename(process.argv[1])
+    }
+
+    let out = '\n'
+
+    if (opts.name && opts.version)
+      out += `  ${opts.name} ${opts.version}\n\n`
+
+    if (opts.description)
+      out += `  ${opts.description}\n\n`
+
+    out += `  ${bin} <command> [options]\n\n`
+
+    out += table(Object.keys(this.commands)
+      .reduce((acc, name) => {
+        const cmd = this.commands[name]
+        return acc.concat([[
+          `  ${[name, ...cmd.alias].join(', ')}`,
+          `  ${cmd.description || ''}`
+        ],[]], Object.keys(cmd.options)
+          .filter(val => !cmd.options[val].overide && !cmd.options.overides )
+          .map(val => [
+            `    ${
+              [val].concat(cmd.options[val].alias || [])
+                .map(x => x.length > 1 ? `--${x}` : `-${x}`).join(', ')
+            }`,
+            `  ${cmd.options[val].description || ''}`
+          ]), Object.keys(cmd.options).length ? [[]] : [])
+      }, []))
+
+    return out
+  }
+
+  const showHelp = opts => console.log(help(opts))
+
+  return { command, parse, help, showHelp }
 
 }
