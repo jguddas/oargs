@@ -2,6 +2,7 @@ const minimist = require('minimist')
 const table = require('text-table')
 const assert = require('assert')
 const path = require('path')
+const chalk = require('chalk')
 
 module.exports = function Cli() {
 
@@ -74,27 +75,29 @@ module.exports = function Cli() {
     let out = '\n'
 
     if (opts.name && opts.version)
-      out += `  ${opts.name} ${opts.version}\n\n`
+      out += `  ${chalk.cyan(opts.name)} ${chalk.dim(opts.version)}\n\n`
 
     if (opts.description)
-      out += `  ${opts.description}\n\n`
+      out += `  ${chalk.dim.italic(opts.description)}\n\n`
 
-    out += `  ${bin} <command> [options]\n\n`
+    out += `  ${chalk.green(bin)} ${chalk.magenta('<command>')} ${chalk.yellow('[options]')}\n\n`
 
     out += table(Object.keys(this.commands)
       .reduce((acc, name) => {
         const cmd = this.commands[name]
         return acc.concat([[
-          `  ${[name, ...cmd.alias].join(', ')}`,
-          `  ${cmd.description || ''}`
+          `  ${[name, ...cmd.alias].map(x => chalk.magenta(x)).join(', ')}`,
+          `  ${chalk.dim(cmd.description || '')}`
         ],[]], Object.keys(cmd.options)
           .filter(val => !cmd.options[val].overide && !cmd.options.overides )
           .map(val => [
             `    ${
-              [val].concat(cmd.options[val].alias || [])
-                .map(x => x.length > 1 ? `--${x}` : `-${x}`).join(', ')
+            [val].concat(cmd.options[val].alias || [])
+              .map(x => x.length > 1 ? `--${x}` : `-${x}`)
+              .map(x => chalk.yellow(x))
+              .join(', ')
             }`,
-            `  ${cmd.options[val].description || ''}`
+            `  ${chalk.dim(cmd.options[val].description || '')}`
           ]), Object.keys(cmd.options).length ? [[]] : [])
       }, []))
 
