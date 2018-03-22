@@ -80,7 +80,7 @@ module.exports = function Cli() {
     if (opts.description && opts.showPkgInfo !== false)
       out += `  ${chalk.dim.italic(opts.description)}\n\n`
 
-    out += `  ${chalk.green(bin)} ${chalk.magenta('<command>')} ${chalk.yellow('[options]')}\n\n`
+    out += `  $ ${chalk.green(bin)} ${chalk.magenta('<command>')} ${chalk.yellow('[options]')}\n\n`
 
     out += table(Object.keys(this.commands)
       .reduce((acc, name) => {
