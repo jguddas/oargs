@@ -196,3 +196,15 @@ it('option: overides', () => {
       second: { option: 'second' }
     })
 })
+
+it('option: mapper', () => {
+  const cli = oargs()
+  cli.command('command').option('option', { mapper: x => x + 1 })
+
+  expect(cli.parse(minimist(['command'])).mapped)
+    .toEqual({ default: {} })
+  expect(cli.parse(minimist(['command', '--option=4'])).mapped)
+    .toEqual({ default: { option: 5 } })
+  expect(cli.parse(minimist(['command', '--no-option'])).mapped)
+    .toEqual({ default: { option: 1 } })
+})

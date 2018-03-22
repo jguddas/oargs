@@ -49,7 +49,8 @@ module.exports = function Cli() {
         const val = [
           (opt.overides || {})[flt],
           opt.overide,
-          flags[key],
+          opt.mapper && flags[key] !== undefined
+            ? opt.mapper(flags[key], flt) : flags[key],
           (opt.defaults || {})[flt],
           opt.default,
         ].find(val => val !== undefined)
