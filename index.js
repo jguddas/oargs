@@ -74,10 +74,10 @@ module.exports = function Cli() {
 
     let out = '\n'
 
-    if (opts.name && opts.version)
+    if (opts.name && opts.version && opts.showPkgInfo !== false)
       out += `  ${chalk.cyan(opts.name)} ${chalk.dim(opts.version)}\n\n`
 
-    if (opts.description)
+    if (opts.description && opts.showPkgInfo !== false)
       out += `  ${chalk.dim.italic(opts.description)}\n\n`
 
     out += `  ${chalk.green(bin)} ${chalk.magenta('<command>')} ${chalk.yellow('[options]')}\n\n`
