@@ -25,8 +25,8 @@ module.exports = function Cli() {
     ;[].concat(alias).forEach(val => this.aliases[val] = name)
     const option = (name, opts = {}) => {
       assert(typeof name === 'string', 'option name is required')
-      cmd.options[name] = opts;
-      [].concat(opts.alias || []).forEach(val => cmd.aliases[val] = name)
+      cmd.options[name] = opts
+      ;[].concat(opts.alias || []).forEach(val => cmd.aliases[val] = name)
       return { option }
     }
     return { option }
