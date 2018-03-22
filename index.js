@@ -89,7 +89,7 @@ module.exports = function Cli() {
           `  ${[name, ...cmd.alias].map(x => chalk.magenta(x)).join(', ')}`,
           `  ${chalk.dim(cmd.description || '')}`
         ],[]], Object.keys(cmd.options)
-          .filter(val => !cmd.options[val].overide && !cmd.options.overides )
+          .filter(val => cmd.options[val].inHelp !== false )
           .map(val => [
             `    ${
             [val].concat(cmd.options[val].alias || [])
