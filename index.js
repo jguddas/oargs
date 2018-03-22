@@ -4,6 +4,7 @@ const assert = require('assert')
 module.exports = function Cli() {
 
   this.commands = {}
+  this.aliases = {}
 
   const command = (name, opts, callback) => {
     assert(typeof name === 'string', 'command name is required')
@@ -17,7 +18,8 @@ module.exports = function Cli() {
       alias: [].concat(alias),
       filter: [].concat(filter || [])
     }
-    ;[name].concat(alias).forEach(val => this.commands[val] = cmd)
+    this.commands[name] = cmd
+    ;[].concat(alias).forEach(val => this.aliases[val] = name)
     const option = (name, opts = {}) => {
       assert(typeof name === 'string', 'option name is required')
       cmd.options[name] = opts;
@@ -29,7 +31,7 @@ module.exports = function Cli() {
 
   const parse = (argv = minimist(process.argv.slice(2))) => {
     const { _: [name, ..._], ...flags } = argv
-    const command = this.commands[name]
+    const command = this.commands[this.aliases[name] || name]
     if (!command) return false
     const { callback, options, aliases, filter } = command
 
@@ -54,7 +56,7 @@ module.exports = function Cli() {
       })
     }
     if (callback) callback({command, mapped, argv: { ...flags, _ }})
-    return {command, mapped, argv: { ...flags, _ }}
+    return { command, mapped, argv: { ...flags, _ } }
   }
 
   return { command, parse }
