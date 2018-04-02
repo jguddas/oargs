@@ -100,7 +100,7 @@ module.exports = function Cli() {
             }`,
             `  ${chalk.dim(cmd.options[val].description || '')}`
           ]), Object.keys(cmd.options).length ? [[]] : [])
-      }, []))
+      }, []), { stringLength: str => str.replace(/\u001b\[\d+m/g, '').length })
 
     return out
   }
