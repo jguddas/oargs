@@ -169,9 +169,9 @@ it('option: defaults', () => {
     })
 })
 
-it('option: overide', () => {
+it('option: override', () => {
   const cli = oargs()
-  cli.command('command').option('option', { overide: 'default' })
+  cli.command('command').option('option', { override: 'default' })
 
   expect(cli.parse(minimist(['command'])).mapped)
     .toEqual({ default: { option: 'default' } })
@@ -179,9 +179,9 @@ it('option: overide', () => {
     .toEqual({ default: { option: 'default' } })
 })
 
-it('option: overides', () => {
+it('option: overrides', () => {
   const cli = oargs()
-  cli.command('command').option('option', { overides: { first: 'first', second: 'second' }, filter:['first', 'second'] })
+  cli.command('command').option('option', { overrides: { first: 'first', second: 'second' }, filter:['first', 'second'] })
 
   expect(cli.parse(minimist(['command'])).mapped)
     .toEqual({

@@ -47,8 +47,8 @@ module.exports = function Cli() {
       const opt = options[aliases[key] || key] || {}
       ;[].concat(opt.filter || filter).forEach(flt => {
         const val = [
-          (opt.overides || {})[flt],
-          opt.overide,
+          (opt.overrides || {})[flt],
+          opt.override,
           opt.mapper && flags[key] !== undefined
             ? opt.mapper(flags[key], flt) : flags[key],
           (opt.defaults || {})[flt],
