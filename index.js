@@ -21,15 +21,14 @@ module.exports = function Cli() {
       alias: [].concat(alias),
       filter: [].concat(filter || [])
     }
-    this.commands[name] = cmd
     ;[].concat(alias).forEach(val => this.aliases[val] = name)
-    const option = (name, opts = {}) => {
+    cmd.option = (name, opts = {}) => {
       assert(typeof name === 'string', 'option name is required')
       cmd.options[name] = opts
       ;[].concat(opts.alias || []).forEach(val => cmd.aliases[val] = name)
-      return { option }
+      return cmd
     }
-    return { option }
+    return this.commands[name] = cmd
   }
 
   const parse = (argv = minimist(process.argv.slice(2))) => {
@@ -107,6 +106,13 @@ module.exports = function Cli() {
 
   const showHelp = opts => console.log(help(opts))
 
-  return { command, parse, help, showHelp }
+  return {
+    command,
+    parse,
+    help,
+    showHelp,
+    commands: this.commands,
+    aliases: this.aliases,
+  }
 
 }
